@@ -47,7 +47,7 @@ void requestEvent() {
  // Put the data inside Wire.write()
 
     Wire.write("240, 2.5, 120, 0.9, 50");
-    Serial.println("240, 2.5, 120, 0.9, 50");
+    Serial.println(output);
     
 }
 
@@ -61,15 +61,22 @@ void setup()
   node.begin(111, mySerial);
   Serial.println("CS I2C slaves Testing");
   
-  
   // I2C Slave address
   Wire.begin( 0x5B );
   Wire.onRequest(requestEvent);
+  
 
 }
 
 void loop()
 {
+  Wire.beginTransmission(0x5B);
+  //Wire.send(0);
+  Wire.requestFrom(requestEvent, 1);
+  Wire.endTransmission();
+
+  while(Wire.available()){
+    
   result = node.readInputRegisters(m_startAddress[sta], m_length);
   Serial.println(result);
   if (result == node.ku8MBSuccess)
@@ -183,4 +190,5 @@ void loop()
   sta++;
   if (sta == 12) sta = 0;
   delay(1000);
+}
 }
