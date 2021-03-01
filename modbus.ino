@@ -49,7 +49,7 @@ void requestEvent() {
 
  // Put the data inside Wire.write()
  
-    Wire.write("230, 0.1, 12, 0.5, 22");
+    Wire.write("240.00,0.10,12.25,0.53,22.13,0.00,50.00,0.78");
     
 }
 
@@ -68,6 +68,7 @@ void setup()
   // I2C Slave address
   Wire.begin( 0x5B );
   Wire.onRequest(requestEvent);
+  Serial.println("Sending to Cognisense...");
   
 
 }
@@ -75,8 +76,6 @@ void setup()
 void loop()
 {
   Wire.beginTransmission(0x5B);
-  //Wire.send(0);
-  Wire.requestFrom(requestEvent, 1);
   Wire.endTransmission();
 
 
@@ -141,7 +140,7 @@ void loop()
         totalKwh = String(meterdata.f);
         Serial.print(totalKwh);
         Serial.println("");
-       } 
+       }  
   }
 
       else 
